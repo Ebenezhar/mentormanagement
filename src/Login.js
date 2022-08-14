@@ -1,9 +1,61 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useFormik } from 'formik';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate, Link } from "react-router-dom";
+import UserContext from './usercontext';
 
 function Login() {
+  let userData = useContext(UserContext);
+  let [isLoading, setLoading] = useState(false);
+  let navigation = useNavigate();
+  // let users = userData.user;
+  // console.log("Data", userData.user);
+  let formik = useFormik({
+    initialValues: {  
+      username: '',
+      password: '',
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.username) {
+        errors.username = 'Please enter the username'
+      } else if (values.username.length < 5) {
+        errors.username = 'Please enter the valid name'
+      }
+      if (!values.password) {
+        errors.password = 'Please enter the password'
+      } else if (values.password < 5) {
+        errors.password = 'Please enter the valid password'
+      }
+      console.log(errors);
+      // return errors;
+    },
+    onSubmit: (values) => {
+      try {
+        setLoading(true);
+        userData.setUser(values);
+        console.log(userData.user);
+        navigation('/portal/TeachersList');
+      }
+      catch (error) { }
+    }
+  })
+  //   let password = "password3";
+  //   let findinList = (password) => {
+  //     let userIndex = users.find(obj => obj.password === password); 
+  //     console.log(userIndex);    
+  //   }
+  //   findinList(password);
+  //   useEffect(() => {
+  //     let fetchData = async () => {
+  //         let users = await axios.get('https://62c29ac6ff594c65675fe6f0.mockapi.io/userList')
+  //         console.log("1",users.data);
+  //         userData.setUser(users.data);
+  //     }
+  //     fetchData();
+  // },[])
   return (
-    <div class="container">
+    <div className="container">
       {/* Hello world */}
       ;
       {/* Outer Row */}
@@ -19,23 +71,35 @@ function Login() {
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
                     </div>
-                    <form className="user">
+                    <form onSubmit={formik.handleSubmit} className="user">
                       <div className="form-group">
                         <input
-                          type="email"
+                          type="text"
+                          name='username'
+                          value={formik.values.username}
+                          onChange={formik.handleChange}
                           className="form-control form-control-user"
                           id="exampleInputEmail"
                           aria-describedby="emailHelp"
-                          placeholder="Enter Email Address..."
+                          placeholder="User Name"
                         />
+                        {
+                          formik.errors.username ? <span style={{ color: 'red' }}> {formik.errors.username}</span> : null
+                        }
                       </div>
                       <div className="form-group">
                         <input
                           type="password"
+                          name='password'
+                          value={formik.values.password}
+                          onChange={formik.handleChange}
                           className="form-control form-control-user"
                           id="exampleInputPassword"
                           placeholder="Password"
                         />
+                        {
+                          formik.errors.password ? <span style={{ color: 'red' }}> {formik.errors.password}</span> : null
+                        }
                       </div>
                       <div className="form-group">
                         <div className="custom-control custom-checkbox small">
@@ -52,12 +116,17 @@ function Login() {
                           </label>
                         </div>
                       </div>
-                      <Link
-                        to="/portal/TeachersList"
+                      <div className="col-lg-6">
+                        <input type={'submit'} value='Submit' disabled={!formik.isValid && isLoading} className="btn btn-primary btn-user btn-block" />
+                      </div>
+                      {/* <Link 
+                       to = '/portal/TeachersList'
+                      type={'submit'} value='Submit'
                         className="btn btn-primary btn-user btn-block"
+                        disabled={!formik.isValid && isLoading}
                       >
                         Login
-                      </Link>
+                      </Link> */}
                       <hr />
                       <a
                         href="index.html"

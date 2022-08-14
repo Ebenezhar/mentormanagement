@@ -1,5 +1,4 @@
 import './App.css';
-
 import DoghnutChart from './DoghnutChart';
 import {
   BrowserRouter,
@@ -10,38 +9,31 @@ import Teachers from './Teachers';
 import Login from './Login';
 import Portal from './Portal';
 import Students from './Students';
+import { UserProvider } from './usercontext';
+import CreateTeachers from './CreateTeachers';
+import CreateStudents from './CreateStudents';
+import EditTeacher from './EditTeacher';
+import EditStudent from './EditStudent';
 
 
 function App() {
 
-  // const data = {
-  //   labels: [
-  //     'Red',
-  //     'Blue',
-  //     'Yellow'
-  //   ],
-  //   datasets: [{
-  //     label: 'My First Dataset',
-  //     data: [300, 50, 100],
-  //     backgroundColor: [
-  //       'rgb(255, 99, 132)',
-  //       'rgb(54, 162, 235)',
-  //       'rgb(255, 205, 86)'
-  //     ],
-  //     hoverOffset: 4
-  //   }]
-  // };
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/Portal' element={<Portal />} >
-          <Route path="TeachersList" element={<Teachers />} />
-          <Route path="StudentList" element={<Students />} />
-        </Route>
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/Portal' element={<Portal />} >
+            <Route path="TeachersList" element={<Teachers />} />
+            <Route path="TeachersList/CreateTeachers" element={<CreateTeachers />} />
+            <Route path="TeachersList/EditTeacher/:id" element={<EditTeacher />} />
+            <Route path="StudentList" element={<Students />} />
+            <Route path="StudentList/CreateStudents" element={<CreateStudents />} />
+            <Route path="StudentList/EditStudent/:id" element={<EditStudent />} />
+          </Route>
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
-
 
   );
 }
