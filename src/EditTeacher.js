@@ -6,10 +6,10 @@ import UserContext from './usercontext';
 
 function EditTeacher() {
   const { id } = useParams();
-  let teachersList = useContext(UserContext);
+
+  const userContextData = useContext(UserContext);
+  const teachersList = userContextData.teachers;
  
-  // let teacherIndex = teachersList.teachers.findIndex(obj => obj.id === id)
-  // console.log("G",teachersList.teachers[teacherIndex]);
   let navigation = useNavigate();
   let [isLoading, setLoading] = useState(false);
   let formik = useFormik({
@@ -57,6 +57,7 @@ function EditTeacher() {
    onSubmit: async (values) => {
     try {
       setLoading(true);
+      console.log(values);
       await axios.put(`https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${id}`,values); 
       navigation("/portal/teachersList")
     } catch (error) { }
@@ -64,12 +65,8 @@ function EditTeacher() {
   })
  
   useEffect(() => {
-    
-    let fetchData = async () => {
-      let userData = await axios.get(`https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${id}`);
-      formik.setValues(userData.data);
-    }
-    fetchData();
+      const index = teachersList.findIndex(obj => obj.id == id)
+       formik.setValues(teachersList[index]);
   },[])
   return (
     <div className="container">

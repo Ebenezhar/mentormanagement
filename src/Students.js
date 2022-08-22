@@ -4,15 +4,23 @@ import { Link } from 'react-router-dom'
 import UserContext from './usercontext';
 
 function Students() {
-    let studentsList = useContext(UserContext);
+    const userContextData = useContext(UserContext);
+    const studentsList = userContextData.students;
 
-    useEffect(() => {
-        let fetchData = async () => {
-            let userData = await axios.get("https://62c29ac6ff594c65675fe6f0.mockapi.io/students");
-            studentsList.setStudents(userData.data)
+    const handleDelete = async (id) => {
+        let ask = window.confirm('Are you sure you want to delete this Id ?')
+        if (ask) {
+            await axios.delete(`https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`)
+            fetchData();
         }
+    }
+    useEffect(() => {      
         fetchData();
     }, [])
+    let fetchData = async () => {
+        let userData = await axios.get("https://62c29ac6ff594c65675fe6f0.mockapi.io/students");
+        userContextData.setStudents(userData.data);
+    }
     return (
         <>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -34,7 +42,6 @@ function Students() {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Class</th>
                                     <th>Section</th>
                                     <th>Age</th>
                                     <th>Gender</th>
@@ -44,7 +51,6 @@ function Students() {
                             <tfoot>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Class</th>
                                     <th>Section</th>
                                     <th>Age</th>
                                     <th>Gender</th>
@@ -53,17 +59,15 @@ function Students() {
                             </tfoot>
                             <tbody>
                                 {
-                                    studentsList.students.map((student) => {
+                                    studentsList.map((student) => {
                                         return <tr>
                                             <td>{student.name}</td>
-                                            <td>{student.class}</td>
                                             <td>{student.section}</td>
                                             <td>{student.age}</td>
                                             <td>{student.gender}</td>
                                             <td>
                                                 <Link to={`/portal/StudentList/EditStudent/${student.id}`} className='btn btn-info mr-1'>Edit</Link>
-                                                {/* <Link to={`/portal/Users/EditUser/${user.id}`} className='btn btn-info mr-1'>Edit</Link>
-                                                <button onClick={() => handleDelete(user.id)} className='btn btn-danger mr-1'>Delete</button> */}
+                                                <button onClick={() => handleDelete(student.id)} className='btn btn-danger mr-1'>Delete</button>
                                             </td>
                                         </tr>
                                     })
