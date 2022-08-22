@@ -12,7 +12,7 @@ function CreateStudents() {
       name: '',
       section: '',
       age: '',
-      // gender: '',
+      gender: '',
     },
     validate: (values) => {
       const errors = {};
@@ -40,6 +40,7 @@ function CreateStudents() {
       return errors;
     },
     onSubmit: async (values) => {
+      console.log(values);
       await axios.post('https://62c29ac6ff594c65675fe6f0.mockapi.io/students', values);
       navigation('/portal/StudentList')
     }
@@ -86,85 +87,18 @@ function CreateStudents() {
             }
           </div>
           <div className="col-lg-6">
-            <label>Gender</label><br></br>
-            <input type="radio" id="male" name="gender" value="Male" />
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="Female" />
-            <label for="female">Female</label>
-            <input type="radio" id="female" name="gender" value="Female" />
+            <label>Gender</label><br/>
+            <input type="radio" id="male" name="gender"  value={formik.values.gender = "Male"}  />
+            <label for="male">Male</label><br/>
+            <input type="radio" id="female" name="gender" value={formik.values.gender = "Female"} />
             <label for="female">Female</label>
           </div>
+          <div className="col-lg-6">
+           <input type={'submit'} value='Submit' className="btn btn-primary mt-5"  />
+        </div>
         </div>
       </form>
     </div>
-
-
-
-    // <div className="container">
-    //   <form onSubmit={formik.handleSubmit}>
-    //     <div className="row">
-    //       <div className="col-lg-6">
-    //         <label>Name</label>
-    //         <input
-    //           type="text"
-    //           name="name"
-    //           onChange={formik.handleChange}
-    //           value={formik.values.name}
-    //           className={`form-control ${formik.errors.name ? 'error-border' : ''} `} />
-    //         {
-    //           formik.errors.name ? <span style={{ color: 'red' }}> {formik.errors.name}</span> : null
-    //         }
-    //       </div>
-    //       <div className="col-lg-6">
-    //         <label>Class</label>
-    //         <input type="text"
-    //           name="class"
-    //           onChange={formik.handleChange}
-    //           value={formik.values.class}
-    //           className={`form-control ${formik.errors.class ? 'errors-border' : ''}`} />
-    //         {
-    //           formik.errors.class ? <span style={{ color: 'red' }}> {formik.errors.class}</span> : null
-    //         }
-    //       </div>
-    //       <div className='col-lg-6'>
-    //         <label>Section</label>
-    //         <input type="text" name='section' 
-    //         onChange={formik.handleChange} 
-    //         value={formik.values.section} 
-    //         className={`form-control ${formik.errors.section ? 'errors-border' : ''}`}>
-    //           {
-    //             formik.errors.section ? <span style={{ color: 'red' }} >{formik.errors.section}</span> : null
-    //           }
-    //         </input>
-    //       </div>
-    //       <div className='col-lg-6'>
-    //         <label>Age</label>
-    //         <input type='number' 
-    //         name='age' onChange={formik.handleChange} 
-    //         value={formik.values.age} 
-    //         className={`form-control ${formik.errors.age ? 'errors-border' : ''}`}>
-    //           {
-    //             formik.errors.age ? <span style={{ color: 'red' }}>{formik.errors.age}</span> : null
-    //           }
-    //         </input>
-    //       </div>
-    //       <div className='col-lg-6'>
-    //         <label>Gender</label>
-    //         <input type='text' name='gender'
-    //          onChange={formik.handleChange} 
-    //          value={formik.values.gender} 
-    //          className={`form-control ${formik.errors.gender ? 'errors-border' : ''}`}>
-    //           {
-    //             formik.errors.gender ? <span style={{ color: 'red' }}>{formik.errors.gender}</span> : null
-    //           }
-    //         </input>
-    //       </div>
-    //     </div>
-    //     <div className="col-lg-6">
-    //       <input type={'submit'} value='Submit' className="btn btn-primary mt-5"  />
-    //     </div>
-    //   </form>
-    // </div>
   )
 }
 

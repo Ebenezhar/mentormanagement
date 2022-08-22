@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 import UserContext from './usercontext';
 
 function Teachers() {
-    let teachersList = useContext(UserContext);
+    const userContextData = useContext(UserContext);
     useEffect(() => {
         fetchData();
     }, [])
     let fetchData = async () => {
         let userData = await axios.get("https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers");
-        teachersList.setTeachers(userData.data)
+        userContextData.setTeachers(userData.data);
     }
     const handleDelete = async (id) => {
         let ask = window.confirm('Are you sure you want to delete this Id ?')
@@ -61,7 +61,7 @@ function Teachers() {
                             </tfoot>
                             <tbody>
                                 {
-                                    teachersList.teachers.map((teacher) => {
+                                    userContextData.teachers.map((teacher) => {
                                         return <tr>
                                             <td>{teacher.name}</td>
                                             <td>{teacher.subject}</td>
@@ -71,7 +71,6 @@ function Teachers() {
                                             <td>
                                                 <Link to={`/portal/TeachersList/EditTeacher/${teacher.id}`} className='btn btn-info mr-1'>Edit</Link>
                                                 <button onClick={() => handleDelete(teacher.id)} className='btn btn-danger mr-1'>Delete</button>
-                                                <button className='btn btn-success'>Add Students</button>
                                             </td>
                                         </tr>
                                     })
